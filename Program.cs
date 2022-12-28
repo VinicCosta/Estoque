@@ -1,3 +1,5 @@
+using Estoque.View;
+
 namespace Estoque
 {
     internal static class Program
