@@ -6,5 +6,7 @@ namespace Estoque
         {
             InitializeComponent();
         }
+
+      
     }
 }
