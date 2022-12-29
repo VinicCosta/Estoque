@@ -42,6 +42,12 @@
             this.label6 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -134,7 +140,7 @@
             "L",
             "CM",
             "M"});
-            this.cbUnidadeMedida.Location = new System.Drawing.Point(576, 117);
+            this.cbUnidadeMedida.Location = new System.Drawing.Point(576, 114);
             this.cbUnidadeMedida.Name = "cbUnidadeMedida";
             this.cbUnidadeMedida.Size = new System.Drawing.Size(121, 23);
             this.cbUnidadeMedida.TabIndex = 9;
@@ -174,12 +180,70 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(479, 145);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(91, 15);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Preço de Venda:";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(576, 142);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(121, 23);
+            this.textBox1.TabIndex = 14;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(521, 203);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(49, 15);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "Código:";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(576, 200);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
+            this.textBox2.Size = new System.Drawing.Size(100, 23);
+            this.textBox2.TabIndex = 16;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(576, 171);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.ReadOnly = true;
+            this.textBox3.Size = new System.Drawing.Size(100, 23);
+            this.textBox3.TabIndex = 17;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(502, 174);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(68, 15);
+            this.label9.TabIndex = 18;
+            this.label9.Text = "Preço Total:";
+            // 
             // Cadastro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label6);
@@ -216,5 +280,11 @@
         private Label label6;
         private Button button1;
         private Button button2;
+        private Label label7;
+        private TextBox textBox1;
+        private Label label8;
+        private TextBox textBox2;
+        private TextBox textBox3;
+        private Label label9;
     }
 }
