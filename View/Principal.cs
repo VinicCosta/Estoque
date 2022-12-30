@@ -21,7 +21,8 @@ namespace Estoque
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            Editar editar = new Editar();
+            editar.ShowDialog();
         }
 
         private void button1_Click(object sender, EventArgs e)
