@@ -126,7 +126,7 @@
             this.mtbLucro.Mask = "000%";
             this.mtbLucro.Name = "mtbLucro";
             this.mtbLucro.Size = new System.Drawing.Size(39, 23);
-            this.mtbLucro.TabIndex = 8;           
+            this.mtbLucro.TabIndex = 8;
             this.mtbLucro.KeyUp += new System.Windows.Forms.KeyEventHandler(this.mtbLucro_KeyUp);
             // 
             // cbUnidadeMedida
@@ -197,7 +197,6 @@
             this.txtPrecoVenda.ReadOnly = true;
             this.txtPrecoVenda.Size = new System.Drawing.Size(121, 23);
             this.txtPrecoVenda.TabIndex = 14;
-            this.txtPrecoVenda.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label8
             // 

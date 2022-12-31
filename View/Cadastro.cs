@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
-
+using System.Data.Common;
 
 namespace Estoque.View
 {
@@ -17,6 +17,10 @@ namespace Estoque.View
     {
         // Variaveis globais
         decimal precoVenda = 0, precoTotal = 0;
+        string strSQL;
+        SqlConnection cn = new SqlConnection("Data Source=localhost\\localhost;Initial Catalog=ESTOQUE;Integrated Security=True");
+        SqlCommand cmd = new SqlCommand();
+        SqlDataReader dr;
 
         public Cadastro()
         {
@@ -35,8 +39,6 @@ namespace Estoque.View
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //criar conexão com o banco e verificar se produto ja está cadastrado
-
             if (string.IsNullOrEmpty(txtProduto.Text))
             {
                 MessageBox.Show("O nome do produto não pode ser vazio!");
@@ -45,23 +47,10 @@ namespace Estoque.View
                 txtProduto.Text != null && txtPrecoTotal.Text != null && txtPrecoVenda.Text != null && 
                 txtQuantidade.Text != null)
             {
-                GravarDadosDB();
-            }
-
-            DialogResult retorno = MessageBox.Show("Deseja cadastrar outro produto?", "Cadastrar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (retorno == DialogResult.Yes)
-            {
-                cbUnidadeMedida.ResetText();
-                mtbPrecoCusto.Clear();
-                mtbLucro.Clear();
-                txtProduto.Clear();
-                txtQuantidade.Clear();
-            }
-            else
-            {
-                Close();
+                GravarDadosDB();   
             }
         }
+
         public void ValidaDadosCadastro()
         {
             if(mtbLucro.Text == "   %")
@@ -85,57 +74,73 @@ namespace Estoque.View
                 txtPrecoTotal.Text = "R$ " + precoTotal.ToString("0.00");
             }
             catch { }
-            
         }
 
         private void mtbLucro_KeyUp(object sender, KeyEventArgs e)
         {
             ValidaDadosCadastro();
+
             // chamar o metodo BuscarProximoId();
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-                
-        }
-
-        private SqlConnection GetConnectionString()
-        {
-            // Cria a string de conexão
-            SqlConnection conn = new SqlConnection("Data Source=DESKTOP-EB11LVD\\SQLEXPRESS;Initial Catalog=ESTOQUE;Integrated Security=True");
-            return conn; 
+            BuscarProximoId();
         }
 
         private void GravarDadosDB()
-        {         
-            //string de inserção no banco de dados
-            string sql = $"INSERT INTO [dbo].[ESTOQUE]([NOME_PRODUTO],[QUANTIDADE_PRODUTO],[UND_MEDIDA],[PRECO_CUSTO],[LUCRO_PRODUTO],[PRECO_VENDA],[PRECO_TOTAL])" +
-                "VALUES(@nome_produto,@quantidade_produto,@und_medida,@preco_custo,@lucro_produto,@preco_venda,@preco_total)";
-
+        {                   
             try
             {
-                //Cria um objeto de comando passando os parametros do comando
-                SqlCommand cmd = new SqlCommand(sql, GetConnectionString());
+                //criar conexão com o banco e verificar se produto ja está cadastrado
+                cn.Open();               
+                strSQL = "SELECT NOME_PRODUTO FROM ESTOQUE WHERE NOME_PRODUTO = '" + txtProduto.Text + "'";
+                cmd.Connection = cn;
+                cmd.CommandText = strSQL;
+                dr = cmd.ExecuteReader();
 
-                //Insere os dados dos elementos da tela no comando sql
-                cmd.Parameters.Add(new SqlParameter("nome_produto", txtProduto.Text));
-                cmd.Parameters.Add(new SqlParameter("quantidade_produto", Convert.ToInt32(txtQuantidade.Text)));
-                cmd.Parameters.Add(new SqlParameter("und_medida", cbUnidadeMedida.Text));
-                cmd.Parameters.Add(new SqlParameter("preco_custo", Convert.ToDecimal(mtbPrecoCusto.Text.Replace("R$ ", "").Trim())));
-                cmd.Parameters.Add(new SqlParameter("lucro_produto", Convert.ToInt32(mtbLucro.Text.Replace("%",""))));
-                cmd.Parameters.Add(new SqlParameter("preco_venda", precoVenda));
-                cmd.Parameters.Add(new SqlParameter("preco_total", precoTotal));
+                if (dr.HasRows)
+                {
+                    MessageBox.Show("Há um produto com o mesmo nome cadastrado!", "Ops", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else 
+                { 
+                    //Verifica se o DataReader ainda está aberto e realiza o fechamento
+                    if (!dr.IsClosed) { dr.Close(); }
 
-                //Abre conexão  com o banco de dados 
-                GetConnectionString().Open();
+                    //string de inserção no banco de dados
+                    strSQL = "INSERT INTO ESTOQUE([NOME_PRODUTO],[QUANTIDADE_PRODUTO],[UND_MEDIDA],[PRECO_CUSTO],[LUCRO_PRODUTO],[PRECO_VENDA],[PRECO_TOTAL])VALUES(@nome_produto,@quantidade_produto,@und_medida,@preco_custo,@lucro_produto,@preco_venda,@preco_total)";
 
-                //Execução do comando
-                cmd.BeginExecuteNonQuery();
+                    cmd.CommandText = strSQL;
+                    //Insere os dados dos elementos da tela no comando sql
+                    cmd.Parameters.Add(@"nome_produto",SqlDbType.VarChar).Value = txtProduto.Text;
+                    cmd.Parameters.Add(@"quantidade_produto", SqlDbType.Int).Value = Convert.ToInt32(txtQuantidade.Text);
+                    cmd.Parameters.Add(@"und_medida", SqlDbType.VarChar).Value = cbUnidadeMedida.Text;
+                    cmd.Parameters.Add(@"preco_custo", SqlDbType.Real).Value = Convert.ToDecimal(mtbPrecoCusto.Text.Replace("R$ ", "").Trim());
+                    cmd.Parameters.Add(@"lucro_produto",SqlDbType.Int).Value = Convert.ToInt32(mtbLucro.Text.Replace("%", "").Trim());
+                    cmd.Parameters.Add(@"preco_venda",SqlDbType.Real).Value = precoVenda;
+                    cmd.Parameters.Add(@"preco_total",SqlDbType.Real).Value = precoTotal;
 
-                //Fecha conexão  com o banco de dados 
-                GetConnectionString().Close();
+                    //Execução do comando
+                    cmd.ExecuteNonQuery();
 
-                MessageBox.Show("Produto Cadastrado!");
+                    cmd.Parameters.Clear();
+
+                    //Fecha conexão  com o banco de dados 
+                    cn.Close();
+
+                    MessageBox.Show("Produto Cadastrado!");
+
+                    DialogResult retorno = MessageBox.Show("Deseja cadastrar outro produto?", "Cadastrar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (retorno == DialogResult.Yes)
+                    {
+                        cbUnidadeMedida.ResetText();
+                        mtbPrecoCusto.Clear();
+                        mtbLucro.Clear();
+                        txtProduto.Clear();
+                        txtQuantidade.Clear();
+                    }
+                    else
+                    {
+                        Close();
+                    }
+                }
             }
             catch(SqlException ex)
             {
@@ -143,57 +148,41 @@ namespace Estoque.View
             }
             finally
             {
-                GetConnectionString().Close();
+                cn.Close();
             }
-        }
-
-        private void BuscarDadosDB()
-        {
-            //string de inserção no banco de dados
-            string sql = "SELECT * FROM dbo.ESTOQUE;";
-
-            try
-            {
-                //Cria um objeto de comando passando os parametros do comando
-                SqlCommand cmd = new SqlCommand(sql, GetConnectionString());
-
-                //Abre conexão  com o banco de dados 
-                GetConnectionString().Open();
-
-                //Execução do comando
-                cmd.BeginExecuteNonQuery();
-
-                //Implementar a visualização dos dados
-
-                //Fecha conexão  com o banco de dados 
-                GetConnectionString().Close();
-            }
-            catch { }
         }
 
         private void BuscarProximoId()
         {
-            //string de inserção no banco de dados
-            string sql = "SELECT MAX(ID_PRODUTO) + 1 FROM dbo.ESTOQUE";
-
             try
             {
-                //Cria um objeto de comando passando os parametros do comando
-                SqlCommand cmd = new SqlCommand(sql, GetConnectionString());
-
                 //Abre conexão  com o banco de dados 
-                GetConnectionString().Open();
+                cn.Open();
+
+                //string de inserção no banco de dados
+                strSQL = "SELECT * FROM ESTOQUE ID_PRODUTO = ID_PRODUTO";
+                cmd.Connection = cn;
+                cmd.CommandText = strSQL;
+                dr = cmd.ExecuteReader();
 
                 //Execução do comando
-                cmd.BeginExecuteNonQuery();
 
-                
+
                 //Implementar a visualização dos dados
-
+                
                 //Fecha conexão  com o banco de dados 
-                GetConnectionString().Close();
+                cn.Close();
+                          
             }
-            catch { }
+            catch (SqlException ex)
+            { 
+                MessageBox.Show("Ocorreu um erro na execução: " + ex); 
+            }
+            finally 
+            {
+                //Fecha conexão  com o banco de dados 
+                cn.Close();
+            }
         }
     }
 }
