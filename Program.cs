@@ -1,4 +1,5 @@
 using Estoque.View;
+using System.Data.SqlClient;
 
 namespace Estoque
 {
