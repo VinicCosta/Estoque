@@ -18,7 +18,7 @@ namespace Estoque.View
         // Variaveis globais
         decimal precoVenda = 0, precoTotal = 0;
         string strSQL;
-        SqlConnection cn = new SqlConnection("Data Source=localhost\\localhost;Initial Catalog=ESTOQUE;Integrated Security=True");
+        SqlConnection cn = new SqlConnection("Data Source=DESKTOP-FFM3M27\\SQLSERVER2019;Initial Catalog=ESTOQUE;Integrated Security=True");
         SqlCommand cmd = new SqlCommand();
         SqlDataReader dr;
 
@@ -73,15 +73,17 @@ namespace Estoque.View
                 txtPrecoVenda.Text = "R$ " + precoVenda.ToString("0.00");
                 txtPrecoTotal.Text = "R$ " + precoTotal.ToString("0.00");
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ocorreu um erro ao validar os dados: " + ex.Message);
+            }
         }
 
         private void mtbLucro_KeyUp(object sender, KeyEventArgs e)
         {
             ValidaDadosCadastro();
 
-            // chamar o metodo BuscarProximoId();
-            BuscarProximoId();
+            //BuscarProximoId();
         }
 
         private void GravarDadosDB()
@@ -144,7 +146,7 @@ namespace Estoque.View
             }
             catch(SqlException ex)
             {
-                MessageBox.Show("Ocorreu um erro ao inserir" + ex);
+                MessageBox.Show("Ocorreu um erro ao salvar: " + ex.Message);
             }
             finally
             {
@@ -160,7 +162,7 @@ namespace Estoque.View
                 cn.Open();
 
                 //string de inserção no banco de dados
-                strSQL = "SELECT * FROM ESTOQUE ID_PRODUTO = ID_PRODUTO";
+                strSQL = "SELECT MAX(ID_PRODUTO) +1 FROM ESTOQUE";
                 cmd.Connection = cn;
                 cmd.CommandText = strSQL;
                 dr = cmd.ExecuteReader();
@@ -176,7 +178,7 @@ namespace Estoque.View
             }
             catch (SqlException ex)
             { 
-                MessageBox.Show("Ocorreu um erro na execução: " + ex); 
+                MessageBox.Show("Ocorreu um erro na execução: " + ex.Message); 
             }
             finally 
             {

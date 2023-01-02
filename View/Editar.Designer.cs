@@ -32,7 +32,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cbProduto = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtCodigo = new System.Windows.Forms.TextBox();
             this.btnPesquisar = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.txtProduto = new System.Windows.Forms.TextBox();
@@ -48,8 +48,8 @@
             this.mtbLucro = new System.Windows.Forms.MaskedTextBox();
             this.txtPrecoVenda = new System.Windows.Forms.TextBox();
             this.txtPrecoTotal = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnSalvar = new System.Windows.Forms.Button();
+            this.btnCancelar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -90,13 +90,13 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Código:";
             // 
-            // textBox1
+            // txtCodigo
             // 
-            this.textBox1.Location = new System.Drawing.Point(446, 103);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 23);
-            this.textBox1.TabIndex = 4;
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtCodigo.Location = new System.Drawing.Point(446, 103);
+            this.txtCodigo.Name = "txtCodigo";
+            this.txtCodigo.Size = new System.Drawing.Size(100, 23);
+            this.txtCodigo.TabIndex = 4;
+            this.txtCodigo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btnPesquisar
             // 
@@ -143,6 +143,7 @@
             "G",
             "KG",
             "L",
+            "ML",
             "CM",
             "M"});
             this.cbUnidadeMedida.Location = new System.Drawing.Point(510, 174);
@@ -213,11 +214,14 @@
             // 
             // mtbLucro
             // 
+            this.mtbLucro.CutCopyMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
             this.mtbLucro.Location = new System.Drawing.Point(82, 294);
             this.mtbLucro.Mask = "000%";
             this.mtbLucro.Name = "mtbLucro";
+            this.mtbLucro.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.mtbLucro.Size = new System.Drawing.Size(126, 23);
             this.mtbLucro.TabIndex = 17;
+            this.mtbLucro.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // txtPrecoVenda
             // 
@@ -235,27 +239,31 @@
             this.txtPrecoTotal.Size = new System.Drawing.Size(121, 23);
             this.txtPrecoTotal.TabIndex = 19;
             // 
-            // button1
+            // btnSalvar
             // 
-            this.button1.BackColor = System.Drawing.Color.Lime;
-            this.button1.Location = new System.Drawing.Point(626, 415);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 20;
-            this.button1.Text = "Salvar";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnSalvar.BackColor = System.Drawing.Color.Lime;
+            this.btnSalvar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnSalvar.Location = new System.Drawing.Point(626, 415);
+            this.btnSalvar.Name = "btnSalvar";
+            this.btnSalvar.Size = new System.Drawing.Size(75, 23);
+            this.btnSalvar.TabIndex = 20;
+            this.btnSalvar.Text = "Salvar";
+            this.btnSalvar.UseVisualStyleBackColor = false;
+            this.btnSalvar.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // btnCancelar
             // 
-            this.button2.BackColor = System.Drawing.Color.Red;
-            this.button2.Location = new System.Drawing.Point(707, 415);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 21;
-            this.button2.Text = "Cancelar";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnCancelar.BackColor = System.Drawing.Color.Red;
+            this.btnCancelar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCancelar.Location = new System.Drawing.Point(707, 415);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(75, 23);
+            this.btnCancelar.TabIndex = 21;
+            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.UseVisualStyleBackColor = false;
+            this.btnCancelar.Click += new System.EventHandler(this.button2_Click);
             // 
             // Editar
             // 
@@ -263,8 +271,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnCancelar);
+            this.Controls.Add(this.btnSalvar);
             this.Controls.Add(this.txtPrecoTotal);
             this.Controls.Add(this.txtPrecoVenda);
             this.Controls.Add(this.mtbLucro);
@@ -280,7 +288,7 @@
             this.Controls.Add(this.txtProduto);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btnPesquisar);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtCodigo);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cbProduto);
             this.Controls.Add(this.label2);
@@ -298,7 +306,7 @@
         private Label label2;
         private ComboBox cbProduto;
         private Label label3;
-        private TextBox textBox1;
+        private TextBox txtCodigo;
         private Button btnPesquisar;
         private Label label4;
         private TextBox txtProduto;
@@ -314,7 +322,7 @@
         private MaskedTextBox mtbLucro;
         private TextBox txtPrecoVenda;
         private TextBox txtPrecoTotal;
-        private Button button1;
-        private Button button2;
+        private Button btnSalvar;
+        private Button btnCancelar;
     }
 }
