@@ -14,17 +14,14 @@ namespace Estoque.View
     public partial class Editar : Form
     {
         decimal precoVenda = 0, precoTotal = 0;
-        string sql = $"SELECT *FROM [dbo].[ESTOQUE]([NOME_PRODUTO],[QUANTIDADE_PRODUTO],[UND_MEDIDA],[PRECO_CUSTO],[LUCRO_PRODUTO],[PRECO_VENDA],[PRECO_TOTAL])" +
-                "VALUES(@nome_produto,@quantidade_produto,@und_medida,@preco_custo,@lucro_produto,@preco_venda,@preco_total)";
+        string strSQL;
+        SqlCommand cmd = new SqlCommand();
+        SqlConnection cn = new SqlConnection("Data Source=DESKTOP-FFM3M27\\SQLSERVER2019;Initial Catalog=ESTOQUE;Integrated Security=True");
+        SqlDataReader dr;
+
         public Editar()
         {
             InitializeComponent();
-        }
-        private SqlConnection GetConnectionString()
-        {
-            // Cria a string de conexão
-            SqlConnection conn = new SqlConnection("Data Source=localhost\\localhost;Initial Catalog=ESTOQUE;Integrated Security=True");
-            return conn;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -58,50 +55,91 @@ namespace Estoque.View
         }
 
         public void ConsultaDadosDB()
-        {            
+        {
             try
             {
-                //Cria um objeto de comando passando os parametros do comando
-                SqlCommand cmd = new SqlCommand(sql, GetConnectionString());
-                SqlDataReader dr;
+                //criar conexão com o banco e verificar se produto ja está cadastrado
+                cn.Open();
+                cmd.Connection = cn;
 
-                //Insere os dados dos elementos da tela no comando sql
-                cmd.Parameters.Add(new SqlParameter("nome_produto", txtProduto.Text));
-                cmd.Parameters.Add(new SqlParameter("quantidade_produto", Convert.ToInt32(txtQuantidade.Text)));
-                cmd.Parameters.Add(new SqlParameter("und_medida", cbUnidadeMedida.Text));
-                cmd.Parameters.Add(new SqlParameter("preco_custo", Convert.ToDecimal(mtbPrecoCusto.Text.Replace("R$ ", "").Trim())));
-                cmd.Parameters.Add(new SqlParameter("lucro_produto", Convert.ToInt32(mtbLucro.Text.Replace("%", ""))));
-                cmd.Parameters.Add(new SqlParameter("preco_venda", precoVenda));
-                cmd.Parameters.Add(new SqlParameter("preco_total", precoTotal));
-
-                //Abre conexão  com o banco de dados 
-                GetConnectionString().Open();
-
-                //Execução do comando
-                cmd.BeginExecuteNonQuery();
-
-                //Fecha conexão  com o banco de dados 
-                GetConnectionString().Close();
-
-                MessageBox.Show("Produto Cadastrado!");
+                if (txtCodigo != null)
+                {
+                    strSQL = "SELECT * FROM ESTOQUE WHERE ID_PRODUTO = '" + txtCodigo.Text + "'";
+                    cmd.CommandText = strSQL;
+                    dr = cmd.ExecuteReader();
+                    if (!dr.HasRows)
+                    {
+                        NaoCadastrado();
+                    }
+                    else
+                    {
+                        dr.Read();
+                        ConsultaProdutos();
+                    }
+                    if (!dr.IsClosed){ dr.Close(); }
+                    cn.Close();
+                }
+                else if(cbProduto != null)
+                {
+                    strSQL = "SELECT * FROM ESTOQUE WHERE NOME_PRODUTO = '" + cbProduto.Text + "'";
+                    cmd.CommandText = strSQL;
+                    dr = cmd.ExecuteReader();
+                    if (!dr.HasRows)
+                    {
+                        NaoCadastrado();
+                    }
+                    else
+                    {
+                        dr.Read();
+                        ConsultaProdutos();
+                    }
+                }
+                else
+                {
+                    NaoCadastrado();
+                }
+                if (!dr.IsClosed) { dr.Close(); }
+                cn.Close();
             }
-            catch (SqlException ex)
-            {
-                MessageBox.Show("Ocorreu um erro ao inserir" + ex);
+            catch (SqlException ex) 
+            { 
+                MessageBox.Show("Ocorreu um erro: " + ex.Message); 
             }
             finally
             {
-                GetConnectionString().Close();
+                cn.Close();
             }
+        }
+
+        private void ConsultaProdutos()
+        {
+            txtCodigo.Text = dr["ID_PRODUTO"].ToString();
+            txtProduto.Text = dr["NOME_PRODUTO"].ToString();
+            txtQuantidade.Text = dr["QUANTIDADE_PRODUTO"].ToString();
+            cbUnidadeMedida.Text = dr["UND_MEDIDA"].ToString();
+            txtPrecoTotal.Text = "R$ " + dr["PRECO_TOTAL"].ToString();
+            txtPrecoVenda.Text = "R$ " + dr["PRECO_VENDA"].ToString();
+            mtbPrecoCusto.Text = dr["PRECO_CUSTO"].ToString();
+            mtbLucro.Text = dr["LUCRO_PRODUTO"].ToString();
+            
+
         }
 
         private void btnPesquisar_Click(object sender, EventArgs e)
         {
             try
             {
-                
+                ConsultaDadosDB();
             }
-            catch { }
+            catch (Exception ex)
+            { 
+                MessageBox.Show("Ocorreu um erro: " + ex); 
+            }
+        }
+
+        public void NaoCadastrado()
+        {
+            MessageBox.Show("Produto não cadastrado!", "Ops", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         public void ValidaDadosCadastro()
@@ -127,7 +165,10 @@ namespace Estoque.View
                 txtPrecoVenda.Text = "R$ " + precoVenda.ToString("0.00");
                 txtPrecoTotal.Text = "R$ " + precoTotal.ToString("0.00");
             }
-            catch { }
+            catch (Exception ex)
+            { 
+                MessageBox.Show("Ocorreu um erro: " + ex); 
+            }
 
         }
     }
