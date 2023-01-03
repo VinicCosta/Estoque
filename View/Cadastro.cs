@@ -92,6 +92,7 @@ namespace Estoque.View
         {
             ValidaDadosCadastro();
             // chamar o metodo BuscarProximoId();
+            BuscarProximoId();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -162,6 +163,10 @@ namespace Estoque.View
 
                 //Execução do comando
                 cmd.BeginExecuteNonQuery();
+                SqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+
+
 
                 //Implementar a visualização dos dados
 
@@ -175,7 +180,6 @@ namespace Estoque.View
         {
             //string de inserção no banco de dados
             string sql = "SELECT MAX(ID_PRODUTO) + 1 FROM dbo.ESTOQUE";
-
             try
             {
                 //Cria um objeto de comando passando os parametros do comando
@@ -185,9 +189,13 @@ namespace Estoque.View
                 GetConnectionString().Open();
 
                 //Execução do comando
-                cmd.BeginExecuteNonQuery();
+                SqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
 
+                txtCodigoId.Text = reader.ToString();
                 
+
+
                 //Implementar a visualização dos dados
 
                 //Fecha conexão  com o banco de dados 

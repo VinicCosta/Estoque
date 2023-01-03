@@ -126,7 +126,7 @@
             this.mtbLucro.Mask = "000%";
             this.mtbLucro.Name = "mtbLucro";
             this.mtbLucro.Size = new System.Drawing.Size(39, 23);
-            this.mtbLucro.TabIndex = 8;           
+            this.mtbLucro.TabIndex = 8;
             this.mtbLucro.KeyUp += new System.Windows.Forms.KeyEventHandler(this.mtbLucro_KeyUp);
             // 
             // cbUnidadeMedida
