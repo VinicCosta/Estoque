@@ -9,23 +9,12 @@ namespace Estoque.Services
 {
     public class ServiceConnection
     {
-        
-        SqlConnection cn = new SqlConnection("Data Source=localhost;Initial Catalog=ESTOQUE;Integrated Security=True");
-        
-
-        public ServiceConnection(SqlConnection cn)
-        {
-            this.cn = cn;            
-        }
-
-        public static SqlConnection GetConnection()
-        {
-            return this.cn;
-        }
+        // String de conexão com o banco de dados
+        public SqlConnection conn = new SqlConnection("Data Source=DESKTOP-EB11LVD\\SQLEXPRESS;Initial Catalog=ESTOQUE;Integrated Security=True");
 
         public string GetStringConnection()
         {
-            return this.cn.ToString();
+            return this.conn.ToString();
         }
     }
 

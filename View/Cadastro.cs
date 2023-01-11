@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Data.Common;
-
+using Estoque.Services;
 namespace Estoque.View
 {
     public partial class Cadastro : Form
@@ -18,7 +18,7 @@ namespace Estoque.View
         // Variaveis globais
         decimal precoVenda = 0, precoTotal = 0;
         string strSQL;
-        SqlConnection cn = new SqlConnection("Data Source=localhost;Initial Catalog=ESTOQUE;Integrated Security=True");
+        ServiceConnection connService = new ServiceConnection();
         SqlCommand cmd = new SqlCommand();
         SqlDataReader dr;
 
@@ -91,9 +91,9 @@ namespace Estoque.View
             try
             {
                 //criar conexão com o banco e verificar se produto ja está cadastrado
-                cn.Open();               
+                connService.conn.Open();               
                 strSQL = "SELECT NOME_PRODUTO FROM ESTOQUE WHERE NOME_PRODUTO = '" + txtProduto.Text + "'";
-                cmd.Connection = cn;
+                cmd.Connection = connService.conn;
                 cmd.CommandText = strSQL;
                 dr = cmd.ExecuteReader();
 
@@ -125,7 +125,7 @@ namespace Estoque.View
                     cmd.Parameters.Clear();
 
                     //Fecha conexão  com o banco de dados 
-                    cn.Close();
+                    connService.conn.Close();
 
                     MessageBox.Show("Produto Cadastrado!");
 
@@ -150,7 +150,7 @@ namespace Estoque.View
             }
             finally
             {
-                cn.Close();
+                connService.conn.Close();
             }
         }
 
@@ -159,11 +159,11 @@ namespace Estoque.View
             try
             {
                 //Abre conexão  com o banco de dados 
-                cn.Open();
+                connService.conn.Open();
 
                 //string de inserção no banco de dados
                 strSQL = "SELECT MAX(ID_PRODUTO) +1 FROM ESTOQUE";
-                cmd.Connection = cn;
+                cmd.Connection = connService.conn;
                 cmd.CommandText = strSQL;
                 dr = cmd.ExecuteReader();
 
@@ -173,7 +173,7 @@ namespace Estoque.View
                 //Implementar a visualização dos dados
                 
                 //Fecha conexão  com o banco de dados 
-                cn.Close();
+                connService.conn.Close();
                           
             }
             catch (SqlException ex)
@@ -183,7 +183,7 @@ namespace Estoque.View
             finally 
             {
                 //Fecha conexão  com o banco de dados 
-                cn.Close();
+                connService.conn.Close();
             }
         }
     }

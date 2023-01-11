@@ -8,16 +8,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Estoque.Services;
 namespace Estoque.View
 {
     public partial class Editar : Form
     {
         decimal precoVenda = 0, precoTotal = 0;
-        string strSQL;
-        SqlCommand cmd = new SqlCommand();
-        SqlConnection cn = new SqlConnection("Data Source=DESKTOP-FFM3M27\\SQLSERVER2019;Initial Catalog=ESTOQUE;Integrated Security=True");
-        SqlDataReader dr;
+        string strSQL;           
+        SqlCommand cmd = new SqlCommand();        
+        ServiceConnection connService = new ServiceConnection();
+        SqlDataReader dr;   
 
         public Editar()
         {
@@ -36,6 +36,8 @@ namespace Estoque.View
         private void button1_Click(object sender, EventArgs e)
         {
             //criar conexão com o banco para atualizar o produto
+            connService.conn.Open();
+            cmd.Connection = connService.conn;
 
             MessageBox.Show("Produto Cadastrado!");
 
@@ -58,9 +60,9 @@ namespace Estoque.View
         {
             try
             {
-                //criar conexão com o banco e verificar se produto ja está cadastrado
-                cn.Open();
-                cmd.Connection = cn;
+                //criar conexão com o banco 
+                connService.conn.Open();
+                cmd.Connection = connService.conn;
 
                 if (txtCodigo != null)
                 {
@@ -77,7 +79,7 @@ namespace Estoque.View
                         ConsultaProdutos();
                     }
                     if (!dr.IsClosed){ dr.Close(); }
-                    cn.Close();
+                    connService.conn.Close();
                 }
                 else if(cbProduto != null)
                 {
@@ -99,7 +101,7 @@ namespace Estoque.View
                     NaoCadastrado();
                 }
                 if (!dr.IsClosed) { dr.Close(); }
-                cn.Close();
+                connService.conn.Close();
             }
             catch (SqlException ex) 
             { 
@@ -107,7 +109,7 @@ namespace Estoque.View
             }
             finally
             {
-                cn.Close();
+                connService.conn.Close();
             }
         }
 
@@ -120,8 +122,7 @@ namespace Estoque.View
             txtPrecoTotal.Text = "R$ " + dr["PRECO_TOTAL"].ToString();
             txtPrecoVenda.Text = "R$ " + dr["PRECO_VENDA"].ToString();
             mtbPrecoCusto.Text = dr["PRECO_CUSTO"].ToString();
-            mtbLucro.Text = dr["LUCRO_PRODUTO"].ToString();
-            
+            mtbLucro.Text = dr["LUCRO_PRODUTO"].ToString();           
 
         }
 
@@ -140,6 +141,11 @@ namespace Estoque.View
         public void NaoCadastrado()
         {
             MessageBox.Show("Produto não cadastrado!", "Ops", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void Editar_Load(object sender, EventArgs e)
+        {
+
         }
 
         public void ValidaDadosCadastro()
