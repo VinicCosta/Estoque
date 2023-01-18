@@ -8,6 +8,7 @@ o conhecimento em CSharp(C#), banco de dados(SQL) e versionamento de código usa
  - [ ] Implementar o método de chamar cada tela.
  - [x] Implementar o modelo do banco.
  - [x] Implementar uma unica string de conexão.
+ - [x] Implementar a tela de Desativação.
  - [ ] ...
 
 ## Telas
