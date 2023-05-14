@@ -51,5 +51,6 @@ namespace Estoque.View
                 connService.conn.Close();
             }
         }
+
     }
 }

@@ -82,8 +82,6 @@ namespace Estoque.View
         private void mtbLucro_KeyUp(object sender, KeyEventArgs e)
         {
             ValidaDadosCadastro();
-
-            //BuscarProximoId();
         }
 
         private void GravarDadosDB()
@@ -154,6 +152,11 @@ namespace Estoque.View
             }
         }
 
+        private void Cadastro_Load(object sender, EventArgs e)
+        {
+            //BuscarProximoId();
+        }
+
         private void BuscarProximoId()
         {
             try
@@ -161,20 +164,20 @@ namespace Estoque.View
                 //Abre conexão  com o banco de dados 
                 connService.conn.Open();
 
-                //string de inserção no banco de dados
-                strSQL = "SELECT MAX(ID_PRODUTO)+1 AS NextID FROM ESTOQUE";
                 cmd.Connection = connService.conn;
+
+                //string de consulta no banco de dados
+                strSQL = "SELECT MAX(ID_PRODUTO)+1 AS NextID FROM ESTOQUE";
+
                 cmd.CommandText = strSQL;
+
                 dr = cmd.ExecuteReader();
 
-                //Execução do comando
+                dr.Read();
 
+                txtCodigoId.Text = dr[@"NextID"].ToString() ;
 
-                //Implementar a visualização dos dados
-                
-                //Fecha conexão  com o banco de dados 
-                connService.conn.Close();
-                          
+                connService.conn.Close();           
             }
             catch (SqlException ex)
             { 

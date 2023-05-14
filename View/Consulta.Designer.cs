@@ -30,6 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Consulta));
             this.label1 = new System.Windows.Forms.Label();
             this.serviceConnectionBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -112,12 +117,14 @@
             // 
             // ID_Produto
             // 
-            this.ID_Produto.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.ID_Produto.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.ID_Produto.DataPropertyName = "ID_PRODUTO";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.ID_Produto.DefaultCellStyle = dataGridViewCellStyle2;
             this.ID_Produto.HeaderText = "ID";
             this.ID_Produto.Name = "ID_Produto";
             this.ID_Produto.ReadOnly = true;
-            this.ID_Produto.Width = 43;
+            this.ID_Produto.Width = 50;
             // 
             // NOME_PRODUTO
             // 
@@ -125,6 +132,7 @@
             this.NOME_PRODUTO.HeaderText = "Descrição";
             this.NOME_PRODUTO.Name = "NOME_PRODUTO";
             this.NOME_PRODUTO.ReadOnly = true;
+            this.NOME_PRODUTO.Width = 160;
             // 
             // QUANTIDADE_PRODUTO
             // 
@@ -136,30 +144,43 @@
             // PRECO_CUSTO
             // 
             this.PRECO_CUSTO.DataPropertyName = "PRECO_CUSTO";
-            this.PRECO_CUSTO.HeaderText = "Custo";
+            dataGridViewCellStyle3.Format = "C2";
+            dataGridViewCellStyle3.NullValue = null;
+            this.PRECO_CUSTO.DefaultCellStyle = dataGridViewCellStyle3;
+            this.PRECO_CUSTO.HeaderText = "Custo (R$)";
             this.PRECO_CUSTO.Name = "PRECO_CUSTO";
             this.PRECO_CUSTO.ReadOnly = true;
             // 
             // LUCRO_PRODUTO
             // 
             this.LUCRO_PRODUTO.DataPropertyName = "LUCRO_PRODUTO";
-            this.LUCRO_PRODUTO.HeaderText = "Lucro";
+            dataGridViewCellStyle4.NullValue = null;
+            this.LUCRO_PRODUTO.DefaultCellStyle = dataGridViewCellStyle4;
+            this.LUCRO_PRODUTO.HeaderText = "Lucro (%)";
             this.LUCRO_PRODUTO.Name = "LUCRO_PRODUTO";
             this.LUCRO_PRODUTO.ReadOnly = true;
             // 
             // PRECO_VENDA
             // 
             this.PRECO_VENDA.DataPropertyName = "PRECO_VENDA";
-            this.PRECO_VENDA.HeaderText = "Preço Venda";
+            dataGridViewCellStyle5.Format = "C2";
+            dataGridViewCellStyle5.NullValue = null;
+            this.PRECO_VENDA.DefaultCellStyle = dataGridViewCellStyle5;
+            this.PRECO_VENDA.HeaderText = "Preço Venda (R$)";
             this.PRECO_VENDA.Name = "PRECO_VENDA";
             this.PRECO_VENDA.ReadOnly = true;
+            this.PRECO_VENDA.Width = 130;
             // 
             // PRECO_TOTAL
             // 
             this.PRECO_TOTAL.DataPropertyName = "PRECO_TOTAL";
-            this.PRECO_TOTAL.HeaderText = "Total Venda";
+            dataGridViewCellStyle6.Format = "C2";
+            dataGridViewCellStyle6.NullValue = null;
+            this.PRECO_TOTAL.DefaultCellStyle = dataGridViewCellStyle6;
+            this.PRECO_TOTAL.HeaderText = "Total Venda (R$)";
             this.PRECO_TOTAL.Name = "PRECO_TOTAL";
             this.PRECO_TOTAL.ReadOnly = true;
+            this.PRECO_TOTAL.Width = 130;
             // 
             // Consulta
             // 

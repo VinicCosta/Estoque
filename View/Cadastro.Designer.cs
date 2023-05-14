@@ -261,6 +261,7 @@
             this.MaximizeBox = false;
             this.Name = "Cadastro";
             this.Text = "Cadastro";
+            this.Load += new System.EventHandler(this.Cadastro_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
